@@ -25,7 +25,7 @@ class Topscore:
     def __init__(self):
         self.high_score = 0
     def top_score(self, score):
-        if score &gt; self.high_score:
+        if score > self.high_score:
             self.high_score = score
         return self.high_score
 
@@ -47,10 +47,10 @@ class Dragon:
 
     def update(self):
         canvas.blit(self.dragon_img, self.dragon_img_rect)
-        if self.dragon_img_rect.top &lt;= cactus_img_rect.bottom:
+        if self.dragon_img_rect.top <= cactus_img_rect.bottom:
             self.up = False
             self.down = True
-        elif self.dragon_img_rect.bottom &gt;= fire_img_rect.top:
+        elif self.dragon_img_rect.bottom >= fire_img_rect.top:
             self.up = True
             self.down = False
 
@@ -74,7 +74,7 @@ class Flames:
     def update(self):
         canvas.blit(self.flames_img, self.flames_img_rect)
 
-        if self.flames_img_rect.left &gt; 0:
+        if self.flames_img_rect.left > 0:
             self.flames_img_rect.left -= self.flames_velocity
 
 
@@ -91,13 +91,13 @@ class Mario:
 
     def update(self):
         canvas.blit(self.mario_img, self.mario_img_rect)
-        if self.mario_img_rect.top &lt;= cactus_img_rect.bottom:
+        if self.mario_img_rect.top <= cactus_img_rect.bottom:
             game_over()
-            if SCORE &gt; self.mario_score:
+            if SCORE > self.mario_score:
                 self.mario_score = SCORE
-        if self.mario_img_rect.bottom &gt;= fire_img_rect.top:
+        if self.mario_img_rect.bottom >= fire_img_rect.top:
             game_over()
-            if SCORE &gt; self.mario_score:
+            if SCORE > self.mario_score:
                 self.mario_score = SCORE
         if self.up:
             self.mario_img_rect.top -= 10
@@ -161,7 +161,7 @@ def check_level(SCORE):
         cactus_img_rect.bottom = 150
         fire_img_rect.top = WINDOW_HEIGHT - 150
         LEVEL = 3
-    elif SCORE &gt; 30:
+    elif SCORE > 30:
         cactus_img_rect.bottom = 200
         fire_img_rect.top = WINDOW_HEIGHT - 200
         LEVEL = 4
@@ -180,7 +180,7 @@ def game_loop():
         global SCORE
         SCORE = 0
         global  HIGH_SCORE
-        flames_list = &#91;]
+        flames_list = []
         pygame.mixer.music.load('mario_theme.wav')
         pygame.mixer.music.play(-1, 0.0)
         while True:
@@ -194,7 +194,7 @@ def game_loop():
                 new_flame = Flames()
                 flames_list.append(new_flame)
             for f in flames_list:
-                if f.flames_img_rect.left &lt;= 0:
+                if f.flames_img_rect.left <= 0:
                     flames_list.remove(f)
                     SCORE += 1
                 f.update()
@@ -239,29 +239,10 @@ def game_loop():
             for f in flames_list:
                 if f.flames_img_rect.colliderect(mario.mario_img_rect):
                     game_over()
-                    if SCORE &gt; mario.mario_score:
+                    if SCORE > mario.mario_score:
                         mario.mario_score = SCORE
             pygame.display.update()
             CLOCK.tick(FPS)
 
 
 start_game()
-
-def start_game():
-    canvas.fill(BLACK)
-    start_img = pygame.image.load('start.png')
-    start_img_rect = start_img.get_rect()
-    start_img_rect.center = (WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
-    canvas.blit(start_img, start_img_rect)
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    pygame.quit()
-                    sys.exit()
-                game_loop()
-        pygame.display.update()
-
